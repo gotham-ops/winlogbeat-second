@@ -1,0 +1,43 @@
+###############################################################################
+############################# Winlogbeat ######################################
+
+#======================= Winlogbeat specific options ==========================
+
+winlogbeat.event_logs:
+  - name: Application
+    ignore_older: 72h
+    tags: ["server","{{winlogbeat_tags_env}}","{{winlogbeat_tags_domain}}"]
+  - name: System
+    ignore_older: 72h
+    tags: ["server","{{winlogbeat_tags_env}}","{{winlogbeat_tags_domain}}"]
+  - name: Security
+    event_id: -5156, -5158, -4656, -4658, -4663, -4690
+    ignore_older: 72h
+    tags: ["server","{{winlogbeat_tags_env}}","{{winlogbeat_tags_domain}}"]
+
+winlogbeat.registry_file: {{ winlogbeat_registry_file }}
+
+#----------------------------- Logstash output --------------------------------
+
+{% if winlogbeat_host_type == azure %} #check virtualization type from facts
+{% if winlogbeat_azure_subscription id == '443b61c4-bf2e-44c7-b521-2baa9509e345' %}
+output.logstash.hosts: {{ winlogbeat_azure_logstash_host1_hostname }}:{{ winlogbeat_azure_logstash_host1_port }}
+{% elif winlogbeat_azure_subscription id == '6619a350-8c21-4b49-9439-8723de3dfca2' %}
+output.logstash.hosts: {{ winlogbeat_azure_logstash_host2_hostname }}:{{ winlogbeat_azure_logstash_host2_port }}
+{% endif %}
+{% else %}
+output.logstash.hosts: {{ winlogbeat_logstash_host1_hostname }}:{{ winlogbeat_logstash_host1_port }}
+{% enfdif %}
+output.logstash.loadbalance: true
+output.logstash.index: winlogbeat
+
+#================================ Logging =====================================
+
+logging.level: "{{ winlogbeat_log_level }}"
+logging.to_files: true
+logging.to_syslog: false
+logging.metrics.enabled: true
+logging.metrics.period: 5m
+logging.files.path: {{ winlogbeat_logs_dir }}
+logging.files.rotateeverybytes: 10485760
+logging.files.keepfiles: 7

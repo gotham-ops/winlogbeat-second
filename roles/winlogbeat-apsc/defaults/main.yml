@@ -1,0 +1,23 @@
+---
+winlogbeat_file_name: 'winlogbeat-5.4.1-windows-x86_64'
+winlogbeat_file_ext: '.zip'
+winlogbeat_zip_url: 'https://artifacts.elastic.co/downloads/beats/winlogbeat/{{ winlogbeat_file_name }}{{ winlogbeat_file_ext }}'
+winlogbeat_sha_url: 'https://artifacts.elastic.co/downloads/beats/winlogbeat/{{ winlogbeat_file_name }}{{ winlogbeat_file_ext }}.sha512'
+winlogbeat_servicename: 'winlogbeat'
+winlogbeat_root_dir: "C:\\Program Files\\"
+winlogbeat_base_dir: "{{ winlogbeat_root_dir }}winlogbeat\\"
+winlogbeat_tags_env: "apsdev"
+winlogbeat_tags_domain: "apsc.com"
+
+winlogbeat_event_log_template: "AZURE-event_logs.erb"
+winlogbeat_enable_logging: true
+winlogbeat_logs_dir: "{{ winlogbeat_base_dir }}Logs\\"
+winlogbeat_logstash_host1_hostname: 'logstash1'
+winlogbeat_logstash_host1_port: '5144'
+winlogbeat_logstash_host2_hostname: 'logstash1'
+winlogbeat_logstash_host2_port: '5144'
+winlogbeat_azure_logstash_host1_hostname: '10.103.208.8'
+winlogbeat_azure_logstash_host1_port: '5044'
+winlogbeat_azure_logstash_host2_hoastname: '10.102.37.35'
+winlogbeat_azure_logstash_host2_port: '5044'
+winlogbeat_log_level: "info"
